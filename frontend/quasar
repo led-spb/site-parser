@@ -1,0 +1,4 @@
+#!/bin/sh
+
+cd $(dirname $0)/..
+MSYS_NO_PATHCONV=1 docker run --rm -it -v $(pwd):/app -w /app/frontend node:19.3.0-alpine yarn quasar $@

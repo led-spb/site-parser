@@ -1,0 +1,66 @@
+{% extends 'admin/master.html' %}
+{% import 'admin/model/layout.html' as model_layout with context %}
+{% import 'admin/lib.html' as lib with context %}
+{% import 'admin/actions.html' as actionlib with context %}
+
+
+{% block body %}
+
+  <div class="row row-cols-1 row-cols-md-3">
+  {% for row in data %}
+  {% if loop.index0 > 0 and loop.index0 is divisibleby(3) %}
+  </div>
+  <div class="row row-cols-1 row-cols-md-3">
+  {% endif %}
+    <div class="col mb-4">
+      <div class="card"> {#
+        <div class="card-header">
+        </div> #}
+        <div class="card-body">
+          <div class="btn-group btn-group-sm" role="group">
+            <button class="btn btn-xs btn-outline-info">
+                <span class="fa fa-pencil glyphicon glyphicon-pencil"></span>
+            </button>
+            <button class="btn btn-xs btn-outline-success">
+                <span class="fa fa-play glyphicon glyphicon-play"></span>
+            </button>
+            {# Delete button #}
+            <form method="POST" action="{{ get_url('.delete_view') }}">
+              {{ delete_form.id(value=get_pk_value(row)) }}
+              {{ delete_form.url(value=return_url) }}
+              {% if delete_form.csrf_token %}
+              {{ delete_form.csrf_token }}
+              {% elif csrf_token %}
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+              {% endif %}
+              <button class="btn btn-xs btn-outline-danger" onclick="return faHelpers.safeConfirm('{{ _gettext('Are you sure you want to delete this record?') }}');" title="{{ _gettext('Delete record') }}">
+                  <span class="fa fa-trash glyphicon glyphicon-trash"></span>
+              </button>
+            </form>
+          </div>
+          <h5 class="card-title">{{ get_value(row, 'spider.name') }}</h5>
+          <p class="card-text">{{ get_value(row, 'formatted') }}</p>
+        </div>
+        <div class="card-footer text-muted">{{ get_value(row, 'next_run') }}</div>
+      </div>
+    </div>
+  {% endfor %}
+  </div>
+
+  {% block list_pager %}
+  {% if num_pages is not none %}
+  {{ lib.pager(page, num_pages, pager_url) }}
+  {% else %}
+  {{ lib.simple_pager(page, data|length == page_size, pager_url) }}
+  {% endif %}
+  {% endblock %}
+
+{% endblock %}
+
+{% block actions %}
+{{ actionlib.form(actions, get_url('.action_view')) }}
+{% endblock %}
+
+{%- if admin_view.edit_modal or admin_view.create_modal or admin_view.details_modal -%}
+    {{ lib.add_modal_window() }}
+{%- endif -%}
