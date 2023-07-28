@@ -1,0 +1,8 @@
+#!/bin/sh
+
+export MSYS_NO_PATHCONV=1
+cd $(dirname $0)/..
+
+docker run --rm -it -v $(pwd):/app -w /app/frontend node:19.3.0-alpine yarn install
+docker run --rm -it -v $(pwd):/app -w /app/frontend node:19.3.0-alpine yarn quasar build
+
