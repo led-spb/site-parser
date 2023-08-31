@@ -103,6 +103,7 @@ class DoctorSpider(scrapy.Spider):
                 room=app.get('room')
             )
             self.logger.info(item)
+            yield item
         pass
 
     def parse(self, response, **kwargs):

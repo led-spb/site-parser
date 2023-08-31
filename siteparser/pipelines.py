@@ -107,6 +107,7 @@ class TelegramOutputPipeline:
                     method='POST',
                     data={'chat_id': self.telegram_chat_id, 'parse_mode': 'HTML', 'text': message[:4096]}
                 )
+                logging.debug(response.text)
                 response.raise_for_status()
             except BaseException:
                 logging.error('Unable send notification')

@@ -121,8 +121,9 @@ class DoctorAppointmentItem(BaseItem):
     address: str = None
     room: str = None
 
-    template = """<b>{{ clinic }}</b>
-<b>Врач:</b> {{ doctor }} {{ comment or '' }}
-<b>Специальность:</b> {{ speciality }} {{ address or '' }}
-<b>Дата:</b> <a href="https://gorzdrav.spb.ru/service-free-schedule#[{"district":"{{district}}"},{"lpu":"{{clinic.id}}"},{"speciality":"{{speciality.id}}"},{"doctor":"{{doctor.id}}"}]">{{ date.strftime('%d.%m.%Y %H:%M') }}</a>
+    template = """<b>{{ clinic.name }}</b>
+<b>Врач:</b> {{ doctor.name }} {{ doctor.comment or '' }}
+<b>Специальность:</b> {{ speciality.name }} {{ address or '' }}
+
+<b>Дата:</b> <a href="https://gorzdrav.spb.ru/service-free-schedule">{{ date.strftime('%d.%m.%Y %H:%M') }}</a>
 """

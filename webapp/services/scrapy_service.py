@@ -1,3 +1,4 @@
+import logging
 import datetime
 import inspect
 import pickle
@@ -76,11 +77,14 @@ class ScrapyService:
                 http_errors = http_errors + value
             else:
                 http_success = http_success + value
+        
 
         return SpiderStatsModel(
             spider=spider,
-            start_time=tz.fromutc(stats['start_time']),
-            finish_time=tz.fromutc(stats['finish_time']),
+            #start_time=tz.fromutc(stats['start_time']),
+            #finish_time=tz.fromutc(stats['finish_time']),
+            start_time=stats['start_time'],
+            finish_time=stats['finish_time'],
             elapsed_time=stats.get('elapsed_time_seconds'),
             item_scraped_count=stats.get('item_scraped_count', 0),
             item_dropped_count=stats.get('item_dropped_count', 0),
